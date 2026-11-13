@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#f7f6f3" />
+  <title>De Run Connect | Organiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <style>
+    :root{--bg:#f7f6f3;--ink:#111;--blue:#1260f0;--pink:#f20b86;--line:#dcdad4;--muted:#5b5b57;--err:#c4006a;--head:"Barlow Condensed","Arial Narrow",Impact,sans-serif;--body:"Outfit","Helvetica Neue",Arial,sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;min-height:100dvh}
+    :focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+    .wrap{max-width:1160px;margin:auto;padding:0 24px}
+    .label{display:flex;align-items:center;gap:10px;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    .label:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pink)}
+
+    header{position:sticky;top:0;z-index:5;background:#f7f6f3ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:76px}
+    .brand{display:flex;align-items:center;gap:18px}
+    .wordmark{position:relative;display:inline-block;padding:9px 4px;font:italic 800 1.7rem/1 var(--head);text-transform:uppercase;letter-spacing:.01em}
+    .wordmark:before,.wordmark:after{content:"";position:absolute;height:4px;width:46%;transform:skew(-28deg)}
+    .wordmark:before{top:0;left:0;background:var(--blue)}.wordmark:after{bottom:0;right:0;background:var(--pink)}
+
+    button,.btn{font:600 .92rem var(--body);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:12px 20px;background:var(--ink);color:#fff;border:2px solid var(--ink);border-radius:0;transition:background .15s}
+    button:hover{background:#2a2a2a}button:disabled{opacity:.5;cursor:not-allowed}
+    .ghost{background:transparent;color:var(--ink)}.ghost:hover{background:#ebe9e4}
+    .arrow{color:var(--pink);font-weight:700}
+
+    .card{background:#fff;border:1px solid var(--line);border-top:6px solid var(--blue);padding:clamp(22px,4vw,40px)}
+    #loginView{max-width:440px;margin:56px auto}
+    h2{margin:14px 0 18px;font:800 clamp(2.4rem,6vw,3.4rem)/.9 var(--head);text-transform:uppercase}h2 i{font-style:normal;color:var(--pink)}
+    label{display:block;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin:16px 0 7px}
+    input,select,textarea{width:100%;padding:13px 14px;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid #c9c7c0;border-radius:0}
+    input:focus,select:focus,textarea:focus{outline:3px solid #1260f044;border-color:var(--blue);background:#fff}
+    #loginView button{width:100%;margin-top:22px}
+    .error,.note{display:none;margin-top:16px;padding:12px 14px;font-size:.9rem;border:1px solid;border-left-width:5px}
+    .error{color:var(--err);border-color:var(--err);background:#fff}
+    .note{color:var(--ink);border-color:var(--line);border-left-color:var(--blue);background:var(--bg)}
+
+    #dashView{display:none;padding:32px 0 64px}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border:1px solid var(--line);background:#fff;margin-bottom:24px}
+    .stat{padding:20px 22px;border-left:1px solid var(--line)}.stat:first-child{border-left:0}
+    .stat b{display:block;font:800 2.8rem/1 var(--head);color:var(--blue)}
+    .stat:nth-child(2) b{color:var(--ink)}.stat:nth-child(3) b{color:var(--pink)}
+    .stat span{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+    .tools{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px}
+    @media(min-width:760px){.tools{grid-template-columns:200px 2fr 1fr auto auto}}
+    .tools label{margin:0 0 6px}
+    .table-scroll{overflow-x:auto;background:#fff;border:1px solid var(--line)}
+    table{width:100%;border-collapse:collapse;font-size:.92rem}
+    th{text-align:left;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:14px 12px;border-bottom:2px solid var(--ink);white-space:nowrap}
+    td{padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+    td.name{font:800 1.35rem/1.1 var(--head);text-transform:uppercase}
+    td.code{font-family:ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:.06em}
+    .wa{color:var(--blue);font-weight:600;text-decoration:none}.wa:hover{text-decoration:underline}
+    .empty{text-align:center;padding:36px 16px;color:var(--muted)}
+    .toggle{min-height:40px;padding:8px 14px;font-size:.85rem;white-space:nowrap}
+    .toggle[aria-pressed="true"]{background:var(--blue);border-color:var(--blue)}
+    #backupPrint{display:none}
+    #backupPrint table{border-collapse:collapse}#backupPrint th,#backupPrint td{border:1px solid #333;padding:8px;color:#000}#backupPrint td{height:34px}
+    @media print{
+      body *{visibility:hidden!important}
+      #backupPrint,#backupPrint *{visibility:visible!important}
+      #backupPrint{display:block!important;position:absolute;inset:0;padding:16px;background:#fff;color:#000}
+      #backupPrint h1{font:800 2rem var(--head);text-transform:uppercase;margin:0 0 6px}
+      @page{size:landscape;margin:12mm}
+    }
+    @media(max-width:759px){
+      .wrap{padding:0 18px}.wordmark{font-size:1.4rem}.brand .label{display:none}
+      .stat{border-left:0;border-top:1px solid var(--line)}.stat:first-child{border-top:0}
+      .table-scroll{background:none;border:0;overflow:visible}
+      table,tbody,tr,td{display:block;width:100%}thead{display:none}
+      tr{background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue);padding:14px 16px;margin-bottom:12px}
+      td{border:0;padding:3px 0}
+      td[data-l]:before{content:attr(data-l) ": ";font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+      td.name:before{content:""}.toggle{width:100%;margin-top:8px}
+    }
+    @media(prefers-reduced-motion:reduce){button{transition:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand"><span class="wordmark">De Run Connect</span><span class="label">Organiser</span></div>
+      <button id="logoutBtn" class="ghost" style="display:none">Log out</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="card" id="loginView">
+      <div class="label">Organiser access</div>
+      <h2>Log in<i>.</i></h2>
+      <div class="note" id="dbNote">No database is connected yet. Add yours in the DATA LAYER section of this file. You can look around with sample data in the meantime.</div>
+      <label for="email">Email</label>
+      <input type="email" id="email" autocomplete="email" />
+      <label for="password">Password</label>
+      <input type="password" id="password" autocomplete="current-password" />
+      <div class="error" id="loginError" role="alert"></div>
+      <button id="loginBtn">Log in <span class="arrow">↓</span></button>
+      <button id="demoBtn" class="ghost" style="display:none">View sample data</button>
+    </div>
+
+    <div id="dashView">
+      <section id="guestsPanel">
+        <div class="stats">
+          <div class="stat"><b id="sTotal">0</b><span>Registered</span></div>
+          <div class="stat"><b id="sCollected">0</b><span>Wristbands collected</span></div>
+          <div class="stat"><b id="sLeft">0</b><span>Still to collect</span></div>
+        </div>
+        <div class="tools">
+          <div><label for="eventDate">Saturday run</label><input type="date" id="eventDate" /></div>
+          <div><label for="search">Search</label><input type="search" id="search" placeholder="Name, phone, email or ticket code" /></div>
+          <div><label for="fStatus">Show</label>
+            <select id="fStatus"><option value="">Everyone</option><option value="collected">Collected</option><option value="left">Not collected</option></select></div>
+          <button id="csvBtn" class="ghost" style="align-self:end">Export CSV</button>
+          <button id="backupBtn" class="ghost" style="align-self:end">Print backup sheet</button>
+        </div>
+        <div class="error" id="checkinError" role="alert"></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Ticket code</th><th>Registered</th><th>Runs</th><th>Wristband</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <div class="empty" id="empty" style="display:none">No registrations yet.</div>
+        </div>
+        <section id="backupPrint" aria-hidden="true">
+          <h1>De Run Connect: offline check-in</h1>
+          <p>Run date: <strong id="backupDate"></strong>. Use this sheet only if the online list is unavailable, and enter these people online afterwards.</p>
+          <table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Ticket code</th><th>Wristband given</th></tr></thead><tbody id="backupRows"></tbody></table>
+        </section>
+      </section>
+    </div>
+  </div>
+
+<script>
+  /* ================= DATA LAYER =================
+     Connect your new database here and nothing else needs to change.
+     Each function below is a stub. Replace the body with calls to your database.
+
+     Registration record:  { id, fullName, phone, email, ticketCode, submittedAt }
+     Attendance record:    { registrationId, eventDate: 'YYYY-MM-DD', checkedIn: true|false, checkedInAt }
+     Every watch* function must call onData(arrayOfRecords) now and on every change,
+     and return a function that stops watching.
+
+     IMPORTANT: let the database itself decide who is an organiser (its security rules).
+     Hiding this page or checking an email in the browser does not protect the data. */
+  const firebaseConfig = {
+    apiKey: "AIzaSyDloikLXiO9e41l94j31YeOkmWyjCmh86A",
+    authDomain: "derun-f2665.firebaseapp.com",
+    projectId: "derun-f2665",
+    storageBucket: "derun-f2665.firebasestorage.app",
+    messagingSenderId: "797689033847",
+    appId: "1:797689033847:web:47e478df891450bedc0272"
+  };
+  const ADMIN_EMAIL = 'lebogangraseona576@gmail.com'; // display check only; the Firestore rules are the real protection
+  firebase.initializeApp(firebaseConfig);
+  const fauth = firebase.auth(), fdb = firebase.firestore();
+  let DB = {
+    connected: true,
+    signIn: async (email, password) => {
+      const cred = await fauth.signInWithEmailAndPassword(email, password);
+      return cred.user;
+    },
+    signOut: async () => { await fauth.signOut(); },
+    onAuth: cb => fauth.onAuthStateChanged(u => {
+      if (u && (u.email || '').toLowerCase() !== ADMIN_EMAIL) { fauth.signOut(); cb(null); return; }
+      cb(u);
+    }),
+    watchRegistrations: (onData, onError) => fdb.collection('registrations').orderBy('submittedAt', 'desc').onSnapshot(
+      snap => onData(snap.docs.map(d => { const x = d.data(); return { id: d.id, fullName: x.fullName, phone: x.phone, email: x.email, ticketCode: x.ticketCode, submittedAt: x.submittedAt }; })),
+      onError),
+    watchAttendance: (onData, onError) => fdb.collection('attendance').onSnapshot(
+      snap => onData(snap.docs.map(d => d.data())), onError),
+    setAttendance: (registrationId, eventDate, checkedIn) => fdb.collection('attendance').doc(registrationId + '_' + eventDate).set({
+      registrationId: registrationId, eventDate: eventDate, checkedIn: checkedIn,
+      checkedInAt: checkedIn ? firebase.firestore.FieldValue.serverTimestamp() : null
+    })
+  };
+  /* ================= END DATA LAYER ================= */
+
+  // Sample data so you can see the finished design before a database is connected.
+  const DEMO = (() => {
+    const now = Date.now(), mk = (i, n, p, e, c, h) => ({ id: 'r' + i, fullName: n, phone: p, email: e, ticketCode: c, submittedAt: new Date(now - h * 36e5) });
+    const regs = [mk(1,'Thandi Mokoena','082 123 4567','thandi@example.com','DERUN-4F9K2A',2), mk(2,'Sipho Dlamini','071 555 0192','sipho@example.com','DERUN-X7Q1MB',9), mk(3,'Ayesha Patel','083 900 1122','ayesha@example.com','DERUN-8LC0ZD',30), mk(4,'Pieter van Wyk','060 222 3344','pieter@example.com','DERUN-R2T6WN',52)];
+    let att = [];
+    const subs = { a: [] };
+    const push = k => subs[k].forEach(f => f());
+    let authCb = () => {};
+    return {
+      connected: true, signIn: async () => { authCb({ email: 'demo' }); }, signOut: async () => authCb(null),
+      onAuth: cb => { authCb = cb; return () => {}; },
+      watchRegistrations: on => { on(regs); return () => {}; },
+      watchAttendance: on => { const f = () => on(att.slice()); subs.a.push(f); f(); return () => {}; },
+      setAttendance: async (id, d, v) => { att = att.filter(a => !(a.registrationId === id && a.eventDate === d)).concat({ registrationId: id, eventDate: d, checkedIn: v, checkedInAt: v ? new Date() : null }); push('a'); }
+    };
+  })();
+
+  // ===== Dashboard =====
+  const $ = id => document.getElementById(id);
+  let regs = [], att = [], stops = [];
+  const dateKey = d => [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-');
+  const nextSaturday = () => { const d = new Date(); d.setDate(d.getDate() + (6 - d.getDay() + 7) % 7); return d; };
+  const isSaturday = v => { if (!v) return false; const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d).getDay() === 6; };
+  const fmt = v => { const d = v && (v.toDate ? v.toDate() : new Date(v)); return d && !isNaN(d) ? d.toLocaleString('en-ZA', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : ''; };
+  const waLink = p => { let d = String(p || '').replace(/\D/g, ''); if (d.startsWith('0')) d = '27' + d.slice(1); return 'https://wa.me/' + d; };
+  const showErr = (el, msg) => { el.textContent = msg; el.style.display = 'block'; };
+  function cell(text, cls, label) { const td = document.createElement('td'); if (cls) td.className = cls; if (label) td.dataset.l = label; td.textContent = text || '—'; return td; }
+
+  $('eventDate').value = dateKey(nextSaturday());
+  $('eventDate').addEventListener('change', () => {
+    $('checkinError').style.display = 'none';
+    if (!isSaturday($('eventDate').value)) { showErr($('checkinError'), 'Choose a Saturday for this run.'); $('eventDate').value = dateKey(nextSaturday()); }
+    render();
+  });
+
+  // Login
+  async function login() {
+    $('loginError').style.display = 'none'; $('loginBtn').disabled = true;
+    try { await DB.signIn($('email').value.trim(), $('password').value); }
+    catch (e) { showErr($('loginError'), DB.connected ? 'Login failed. Check your email and password.' : 'No database is connected yet.'); }
+    $('loginBtn').disabled = false;
+  }
+  $('loginBtn').onclick = login;
+  $('password').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  $('logoutBtn').onclick = () => DB.signOut();
+  $('demoBtn').onclick = () => { DB = DEMO; start(); DB.signIn(); };
+  if (!DB.connected) { $('dbNote').style.display = 'block'; $('demoBtn').style.display = 'flex'; }
+
+  function handleAuth(user) {
+    stops.forEach(f => f && f()); stops = [];
+    if (user) {
+      stops.push(DB.watchRegistrations(d => { regs = d; render(); }, () => { $('rows').innerHTML = ''; $('empty').style.display = 'block'; $('empty').textContent = 'Could not load registrations.'; }));
+      stops.push(DB.watchAttendance(d => { att = d; render(); }, () => showErr($('checkinError'), 'Could not load check-ins.')));
+    } else { regs = []; att = []; }
+    $('loginView').style.display = user ? 'none' : 'block';
+    $('dashView').style.display = user ? 'block' : 'none';
+    $('logoutBtn').style.display = user ? 'inline-flex' : 'none';
+  }
+  function start() { DB.onAuth(handleAuth); }
+  start();
+
+  // Guest list
+  const filtered = () => {
+    const q = $('search').value.trim().toLowerCase(), s = $('fStatus').value, done = collectedMap();
+    return regs.filter(r => (!q || [r.fullName, r.phone, r.email, r.ticketCode].join(' ').toLowerCase().includes(q)) &&
+      (!s || (s === 'collected') === done.has(r.id)));
+  };
+  const collectedMap = () => { const m = new Map(); att.forEach(a => { if (a.checkedIn === true && a.eventDate === $('eventDate').value) m.set(a.registrationId, a); }); return m; };
+
+  function render() {
+    const date = $('eventDate').value, done = collectedMap(), counts = new Map();
+    att.forEach(a => { if (a.checkedIn === true) counts.set(a.registrationId, (counts.get(a.registrationId) || 0) + 1); });
+    $('sTotal').textContent = regs.length; $('sCollected').textContent = done.size; $('sLeft').textContent = Math.max(regs.length - done.size, 0);
+    const list = filtered(), tbody = $('rows'); tbody.innerHTML = '';
+    $('empty').style.display = list.length ? 'none' : 'block';
+    $('empty').textContent = regs.length ? 'No one matches this search.' : 'No registrations yet.';
+    list.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.appendChild(cell(r.fullName, 'name'));
+      const tdP = document.createElement('td'); tdP.dataset.l = 'Phone';
+      const a = document.createElement('a'); a.className = 'wa'; a.href = waLink(r.phone); a.target = '_blank'; a.rel = 'noopener'; a.textContent = r.phone || '—';
+      tdP.appendChild(a); tr.appendChild(tdP);
+      tr.appendChild(cell(r.email, '', 'Email'));
+      tr.appendChild(cell(r.ticketCode, 'code', 'Ticket'));
+      tr.appendChild(cell(fmt(r.submittedAt), '', 'Registered'));
+      tr.appendChild(cell(String(counts.get(r.id) || 0), '', 'Runs'));
+      const has = done.has(r.id), td = document.createElement('td'); td.dataset.l = 'Wristband';
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'toggle';
+      b.textContent = has ? 'Collected ✓' : 'Mark collected'; b.setAttribute('aria-pressed', String(has));
+      b.setAttribute('aria-label', (has ? 'Undo wristband for ' : 'Wristband collected by ') + (r.fullName || 'guest') + ' on ' + date);
+      b.onclick = async () => {
+        b.disabled = true; $('checkinError').style.display = 'none';
+        try { await DB.setAttendance(r.id, date, !has); } catch (e) { showErr($('checkinError'), 'Could not save. Check the connection and try again.'); b.disabled = false; }
+      };
+      td.appendChild(b); tr.appendChild(td); tbody.appendChild(tr);
+    });
+  }
+  ['search', 'fStatus'].forEach(id => $(id).addEventListener('input', render));
+
+  // CSV (guards against spreadsheet formula injection)
+  $('csvBtn').onclick = () => {
+    const esc = v => { let t = String(v ?? ''); if (/^[=+\-@]/.test(t)) t = "'" + t; return '"' + t.replace(/"/g, '""') + '"'; };
+    const done = collectedMap(), counts = new Map();
+    att.forEach(a => { if (a.checkedIn === true) counts.set(a.registrationId, (counts.get(a.registrationId) || 0) + 1); });
+    const lines = [['Name','Phone','Email','Ticket code','Registered','Run date','Wristband collected','Collected at','Total runs'].map(esc).join(',')];
+    filtered().forEach(r => { const rec = done.get(r.id); lines.push([r.fullName, r.phone, r.email, r.ticketCode, fmt(r.submittedAt), $('eventDate').value, rec ? 'Yes' : 'No', fmt(rec && rec.checkedInAt), counts.get(r.id) || 0].map(esc).join(',')); });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'de-run-connect-guests.csv'; a.click(); URL.revokeObjectURL(a.href);
+  };
+
+  // Printable backup sheet
+  $('backupBtn').onclick = () => {
+    const body = $('backupRows'); body.innerHTML = '';
+    const rows = regs.length ? regs : Array.from({ length: 14 }, () => ({}));
+    rows.forEach(r => { const tr = document.createElement('tr'); [r.fullName, r.phone, r.email, r.ticketCode, ''].forEach(v => { const td = document.createElement('td'); td.textContent = v || ''; tr.appendChild(td); }); body.appendChild(tr); });
+    $('backupDate').textContent = $('eventDate').value;
+    $('backupPrint').setAttribute('aria-hidden', 'false'); window.print(); $('backupPrint').setAttribute('aria-hidden', 'true');
+  };
+
+</script>
+</body>
+</html>

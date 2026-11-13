@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f6f3" />
+  <title>De Run Connect | Every Saturday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f7f6f3;--ink:#111;--blue:#1260f0;--pink:#f20b86;--line:#dcdad4;--muted:#5b5b57;--head:"Barlow Condensed","Arial Narrow",Impact,sans-serif;--body:"Outfit","Helvetica Neue",Arial,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6}
+    a{color:inherit}:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+    .wrap{max-width:1160px;margin:auto;padding:0 28px}
+    .label{display:flex;align-items:center;gap:10px;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    .label:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pink)}
+
+    .ribbon{background:var(--pink);color:#fff;text-align:center;padding:8px 20px;font-size:.85rem;font-weight:600}
+    header{position:sticky;top:0;z-index:5;background:#f7f6f3ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    header .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+    .wordmark{position:relative;display:inline-block;padding:9px 4px;font:italic 800 1.7rem/1 var(--head);text-transform:uppercase;text-decoration:none;letter-spacing:.01em}
+    .wordmark:before,.wordmark:after{content:"";position:absolute;height:4px;transform:skew(-28deg)}
+    .wordmark:before{top:0;left:0;width:46%;background:var(--blue)}
+    .wordmark:after{bottom:0;right:0;width:46%;background:var(--pink)}
+    .nav-cta{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:.85rem;font-weight:700}
+    .arrow{color:var(--pink);font-weight:700}
+
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:18px 26px;background:var(--ink);color:#fff;font:600 .95rem var(--body);text-decoration:none;border:2px solid var(--ink);border-radius:0;cursor:pointer;transition:background .15s}
+    .btn:hover{background:#2a2a2a}
+    .btn.ghost{background:transparent;color:var(--ink)}.btn.ghost:hover{background:#ebe9e4}
+
+    .hero{padding:72px 0 80px}
+    .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+    h1{margin:26px 0 24px;font:800 clamp(4.6rem,13vw,10.5rem)/.84 var(--head);letter-spacing:-.01em;text-transform:uppercase}
+    h1 span{display:block;color:var(--blue)}
+    .lead{font-size:1.1rem;color:var(--muted);max-width:44ch;margin:0 0 32px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .poster{width:100%;display:block;border:1px solid var(--line);background:#fff;box-shadow:12px 12px 0 var(--pink)}
+
+    .facts{border-block:1px solid var(--line)}
+    .facts .wrap{display:grid;grid-template-columns:repeat(3,1fr)}
+    .fact{padding:28px 28px;border-left:1px solid var(--line)}
+    .fact:first-child{border-left:0;padding-left:0}
+    .fact small{display:block;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    .fact strong{display:block;font:800 1.9rem/1.1 var(--head);text-transform:uppercase;margin:6px 0 4px}
+    .fact a{color:var(--blue);font-weight:600;font-size:.9rem}
+
+    .about{padding:96px 0 24px}
+    .about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+    h2{margin:18px 0 20px;font:800 clamp(3rem,7vw,5.6rem)/.88 var(--head);text-transform:uppercase}
+    h2 em{font-style:normal;color:var(--blue)}h2 i{font-style:normal;color:var(--pink)}
+    .about p{color:var(--muted);font-size:1.08rem;max-width:46ch;margin:0}
+    .points{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+    .points li{padding:22px 0;border-bottom:1px solid var(--line)}
+    .points b{display:block;font:800 1.7rem/1.1 var(--head);text-transform:uppercase}
+    .points span{color:var(--muted)}
+
+    .register{padding:80px 0 104px}
+    .card{max-width:780px;margin:auto;padding:clamp(24px,5vw,52px);background:#fff;border:1px solid var(--line);border-top:6px solid var(--blue)}
+    .card h2{font-size:clamp(2.6rem,6vw,4.2rem);margin:16px 0 12px}
+    .card .sub{color:var(--muted);margin:0 0 26px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field.full{grid-column:1/-1}
+    label{display:block;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}
+    label i{font-style:normal;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400}
+    input{width:100%;padding:15px;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid #c9c7c0;border-radius:0}
+    input:focus{outline:3px solid #1260f044;border-color:var(--blue);background:#fff}
+    input:user-invalid{border-color:var(--pink)}
+    .hint{font-size:.84rem;color:var(--muted);margin-top:6px}
+    form .btn{width:100%;margin-top:24px}
+    .fine{font-size:.82rem;color:var(--muted);margin:14px 0 0}
+    .btn:disabled{opacity:.55;cursor:wait}
+
+    .watch{padding:88px 0 8px}
+    .watch .wrap{display:grid;grid-template-columns:1fr minmax(240px,360px);gap:64px;align-items:center}
+    .watch p{color:var(--muted);font-size:1.08rem;max-width:46ch;margin:0 0 28px}
+    .video{width:100%;aspect-ratio:472/850;display:block;background:#111;border:1px solid var(--line);box-shadow:12px 12px 0 var(--blue)}
+    .qr{display:block;margin:18px 22px 0;width:160px;height:160px}
+    .status{margin:16px 0 0;padding:12px 14px;font-size:.9rem;border:1px solid var(--line);border-left:5px solid var(--blue);background:var(--bg)}
+    .status.err{border-left-color:var(--pink)}
+    .ticket{display:none}
+    .stub{border:2px solid var(--ink);margin-top:20px;background:#fff}
+    .stub .top{background:var(--ink);color:#fff;padding:12px 22px;font:italic 800 1.4rem var(--head);text-transform:uppercase}
+    .stub .body{padding:22px;display:grid;gap:2px}
+    .stub .name{font:800 2.2rem/1.05 var(--head);text-transform:uppercase;color:var(--blue)}
+    .stub .code{border-top:2px dashed var(--pink);padding:16px 22px;font-family:ui-monospace,Menlo,monospace;font-size:1.25rem;font-weight:700;letter-spacing:.12em}
+    .t-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.t-actions .btn{flex:1 1 150px;margin:0;width:auto}
+
+    footer{border-top:1px solid var(--line);padding:28px 0;font-size:.88rem;color:var(--muted)}
+    footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    footer a{color:var(--ink);font-weight:600}
+
+    @media(max-width:860px){
+      .wrap{padding:0 22px}.hero{padding:48px 0 56px}
+      .hero .wrap,.about .wrap{grid-template-columns:1fr;gap:44px}
+      .poster{box-shadow:8px 8px 0 var(--pink)}
+      .facts .wrap{grid-template-columns:1fr}.fact,.fact:first-child{border-left:0;padding:22px 0;border-top:1px solid var(--line)}.fact:first-child{border-top:0}
+      .watch .wrap{grid-template-columns:1fr;gap:40px}.watch{padding-top:64px}.video{max-width:360px;margin:auto;box-shadow:8px 8px 0 var(--blue)}
+      .actions .btn{width:100%}.grid{grid-template-columns:1fr}.about{padding-top:64px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+    @media print{body *{visibility:hidden}.ticket,.ticket *{visibility:visible}.ticket{display:block!important;position:absolute;left:0;top:0;width:100%}.t-actions{display:none}}
+  </style>
+</head>
+<body>
+  <div class="ribbon">Launch run: Saturday 21 November 2026, 06:00 at R55 Chill Out</div>
+  <header>
+    <div class="wrap">
+      <a class="wordmark" href="#top" aria-label="De Run Connect home">De Run Connect</a>
+      <a class="nav-cta" href="#register">Register <span class="arrow">↓</span></a>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <div class="label">Community / Sport / Culture / Lifestyle</div>
+        <h1>De Run <span>Connect</span> Every Saturday.</h1>
+        <p class="lead">A fresh start, a shared pace, and a community moving forward together. De Legacy presents the launch run.</p>
+        <div class="actions">
+          <a class="btn" href="#register">Register your place <span class="arrow">↓</span></a>
+          <a class="btn ghost" href="#event">Event details</a>
+        </div>
+      </div>
+      <img class="poster" src="De%20Run%20Connect%20-%20Launch%20Poster.jpg" alt="De Run Connect event update: new date 21 November 2026, 06:00–11:00; R55 Chill Out" />
+    </div>
+  </section>
+
+  <section class="facts" id="event" aria-label="Event details">
+    <div class="wrap">
+      <div class="fact"><small>When</small><strong>Sat 21 Nov, 06:00–11:00</strong><a id="cal" href="#">Add to calendar</a> &nbsp;·&nbsp; <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=De+Run+Connect+Launch+Run&amp;dates=20261121T040000Z/20261121T090000Z&amp;location=R55+Chill+Out&amp;details=Launch+run+of+De+Run+Connect.+De+Legacy+presents+a+community+run+every+Saturday." target="_blank" rel="noopener">Google Calendar</a></div>
+      <div class="fact"><small>Where</small><strong>R55 Chill Out</strong><a href="https://www.google.com/maps/search/?api=1&query=R55+Chill+Out" target="_blank" rel="noopener">Get directions</a></div>
+      <div class="fact"><small>Questions?</small><strong><a href="tel:+27817946412" style="color:inherit;font-size:inherit">081 794 6412</a></strong></div>
+    </div>
+  </section>
+
+  <section class="watch" id="watch">
+    <div class="wrap">
+      <div>
+        <div class="label">See the run</div>
+        <h2>Watch the <em>vibe</em><i>.</i></h2>
+        <p>This is what a De Run Saturday looks like: friends, fresh air and a community moving together. Watch, then register your place.</p>
+        <a class="btn" href="#register">Register your place <span class="arrow">↓</span></a>
+      </div>
+      <video class="video" controls playsinline preload="metadata" poster="launch-video-poster.jpg" aria-label="Video of a De Run community run">
+        <source src="launch-video.mp4" type="video/mp4">
+        Your browser can't play this video.
+      </video>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="wrap">
+      <div>
+        <div class="label">The event</div>
+        <h2>Move together. <em>Build</em> community<i>.</i></h2>
+        <p>De Run brings people together through movement, connection and positive energy. Join the launch and take your first steps with the De Legacy community.</p>
+      </div>
+      <ul class="points">
+        <li><b>Every Saturday</b><span>A regular meeting point to start your weekend.</span></li>
+        <li><b>All paces welcome</b><span>Run, jog or walk. Come as you are.</span></li>
+        <li><b>More than a run</b><span>Community, sport, culture and lifestyle in one place.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="register" id="register">
+    <div class="wrap">
+      <div class="card">
+        <div id="formView">
+          <div class="label">Your Saturday starts here</div>
+          <h2>Register<i>.</i></h2>
+          <p class="sub">Add your details and we will email your event ticket to you.</p>
+          <form id="signupForm" novalidate>
+            <div class="grid">
+              <div class="field">
+                <label for="name">Full name</label>
+                <input id="name" name="name" autocomplete="name" required maxlength="120" placeholder="Your full name">
+              </div>
+              <div class="field">
+                <label for="phone">WhatsApp / phone</label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="40" pattern="[0-9+\s()\-]{9,20}" placeholder="082 123 4567" title="Enter a valid phone number">
+              </div>
+              <div class="field full">
+                <label for="email">Email <i>(your ticket is sent here)</i></label>
+                <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@example.com">
+                <div class="hint">Check your spam folder if the ticket does not arrive within a few minutes.</div>
+              </div>
+            </div>
+            <button class="btn" type="submit" id="submitBtn">Create my ticket <span class="arrow">↓</span></button>
+            <div class="status err" id="formError" role="alert" style="display:none"></div>
+            <p class="fine">We only use your details to organise this event and send your ticket.</p>
+          </form>
+        </div>
+
+        <div class="ticket" id="ticket" aria-live="polite">
+          <div class="label">You're in</div>
+          <h2>See you Saturday<i>.</i></h2>
+          <div class="stub">
+            <div class="top">De Run Connect · Launch run</div>
+            <div class="body">
+              <div class="name" id="ticketName"></div>
+              <div>Saturday 21 November 2026, 06:00–11:00</div>
+              <div>R55 Chill Out</div>
+            </div>
+            <div class="code" id="ticketId"></div>
+            <img class="qr" id="ticketQr" width="160" height="160" alt="Ticket QR code">
+          </div>
+          <div class="status" id="mailStatus"></div>
+          <div class="t-actions">
+            <button class="btn" type="button" onclick="window.print()">Print ticket</button>
+            <a class="btn ghost" id="cal2" href="#">Add to calendar</a>
+            <a class="btn ghost" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=De+Run+Connect+Launch+Run&amp;dates=20261121T040000Z/20261121T090000Z&amp;location=R55+Chill+Out&amp;details=Launch+run+of+De+Run+Connect.+De+Legacy+presents+a+community+run+every+Saturday." target="_blank" rel="noopener">Google Calendar</a>
+            <button class="btn ghost" type="button" id="edit">Register someone else</button>
+          </div>
+          <p class="fine">Show this ticket on your phone or printed to collect your wristband.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 De Legacy · De Run Connect</span>
+      <span>Sponsored by LRO-Media · <a href="mailto:delegacy@gmail.com">delegacy@gmail.com</a></span>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDloikLXiO9e41l94j31YeOkmWyjCmh86A",
+      authDomain: "derun-f2665.firebaseapp.com",
+      projectId: "derun-f2665",
+      storageBucket: "derun-f2665.firebasestorage.app",
+      messagingSenderId: "797689033847",
+      appId: "1:797689033847:web:47e478df891450bedc0272"
+    };
+    const EMAILJS = { service: 'service_qovph9i', template: 'template_1gwktxy', publicKey: 'wuXZsGHjcpgvlQqE0' };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    emailjs.init({ publicKey: EMAILJS.publicKey });
+
+    const ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:De Run Connect Launch Run\nDESCRIPTION:Launch run of De Run Connect. De Legacy presents a community run every Saturday.\nDTSTART:20261121T040000Z\nDTEND:20261121T090000Z\nLOCATION:R55 Chill Out\nEND:VEVENT\nEND:VCALENDAR';
+    const href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    ['cal', 'cal2'].forEach(function (id) { const a = document.getElementById(id); a.href = href; a.download = 'de-run-connect.ics'; });
+    const form = document.getElementById('signupForm'), formView = document.getElementById('formView'), ticket = document.getElementById('ticket');
+    const $ = id => document.getElementById(id);
+    const makeCode = () => {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', b = new Uint8Array(6);
+      crypto.getRandomValues(b);
+      return 'DERUN-' + new Date().getFullYear() + '-' + Array.from(b, x => chars[x % chars.length]).join('');
+    };
+    const qrUrl = code => 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=' + encodeURIComponent(code);
+    const setErr = msg => { const e = $('formError'); e.textContent = msg || ''; e.style.display = msg ? 'block' : 'none'; };
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      setErr('');
+      if (!form.reportValidity()) return;
+      const btn = $('submitBtn'), label = btn.innerHTML;
+      btn.disabled = true; btn.textContent = 'Creating your ticket…';
+      const fullName = $('name').value.trim(), phone = $('phone').value.trim(), email = $('email').value.trim();
+      const code = makeCode();
+
+      try {
+        // Doc id = ticket code, so the security rules can check they match.
+        await db.collection('registrations').doc(code).set({
+          fullName: fullName, phone: phone, email: email, ticketCode: code,
+          submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch (err) {
+        console.error(err);
+        setErr('Sorry, we could not save your registration. Check your connection and try again.');
+        btn.disabled = false; btn.innerHTML = label;
+        return;
+      }
+
+      $('ticketName').textContent = fullName;
+      $('ticketId').textContent = code;
+      $('ticketQr').src = qrUrl(code);
+      const mail = $('mailStatus');
+      mail.className = 'status'; mail.textContent = 'Sending your ticket to ' + email + '…';
+      formView.style.display = 'none';
+      ticket.style.display = 'block';
+      ticket.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      btn.disabled = false; btn.innerHTML = label; form.reset();
+
+      try {
+        await emailjs.send(EMAILJS.service, EMAILJS.template, {
+          to_name: fullName, to_email: email, phone: phone, ticket_code: code, qr_url: qrUrl(code)
+        });
+        mail.textContent = 'Your ticket has been emailed to ' + email + '. Check your spam folder if you do not see it.';
+      } catch (err) {
+        console.error(err);
+        mail.className = 'status err';
+        mail.textContent = 'You are registered, but we could not email your ticket. Please print or screenshot this page and keep it.';
+      }
+    });
+    document.getElementById('edit').addEventListener('click', function () {
+      ticket.style.display = 'none'; formView.style.display = 'block'; $('name').focus();
+    });
+  </script>
+</body>
+</html>
