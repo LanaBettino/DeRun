@@ -1,0 +1,20 @@
+<!-- EmailJS template: paste this into the template's Code editor.
+     Subject: Your De Run Connect launch ticket: {{ticket_code}}
+     To email: {{to_email}}     From name: De Run Connect     Reply to: delegacy@gmail.com
+     Variables used: {{to_name}} {{phone}} {{ticket_code}} {{qr_url}} -->
+<div style="background:#f7f6f3;padding:24px 12px;font-family:Arial,Helvetica,sans-serif">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;margin:auto;background:#ffffff;border:2px solid #111111">
+    <tr><td style="background:#111111;color:#ffffff;padding:14px 22px;font-size:22px;font-weight:bold;font-style:italic;text-transform:uppercase;letter-spacing:.5px">De Run Connect &middot; Launch run</td></tr>
+    <tr><td style="padding:22px">
+      <p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#5b5b57">Ticket for</p>
+      <p style="margin:0 0 16px;font-size:28px;font-weight:bold;text-transform:uppercase;color:#1260f0">{{to_name}}</p>
+      <p style="margin:0;font-size:16px;line-height:1.5;color:#111111">Saturday 21 November 2026, 06:00&ndash;11:00<br>R55 Chill Out</p>
+      <p style="margin:12px 0 0;font-size:13px;color:#5b5b57">Phone on registration: {{phone}}</p>
+    </td></tr>
+    <tr><td style="border-top:2px dashed #f20b86;padding:22px;text-align:center">
+      <img src="{{qr_url}}" width="180" height="180" alt="Ticket QR code" style="display:inline-block">
+      <p style="margin:12px 0 0;font-family:Courier New,monospace;font-size:24px;font-weight:bold;letter-spacing:3px;color:#111111">{{ticket_code}}</p>
+    </td></tr>
+    <tr><td style="padding:0 22px 22px;font-size:14px;color:#5b5b57;line-height:1.5">Show this ticket (on your phone or printed) at the launch to collect your wristband.</td></tr>
+  </table>
+</div>
