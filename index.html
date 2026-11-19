@@ -31,7 +31,15 @@
     .btn:hover{background:#2a2a2a}
     .btn.ghost{background:transparent;color:var(--ink)}.btn.ghost:hover{background:#ebe9e4}
 
-    .hero{padding:72px 0 80px}
+    .hero{position:relative;overflow:hidden;padding:72px 0 80px;background:#101014;color:#fff}
+    .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;filter:saturate(.85)}
+    .hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.55) 47%,rgba(0,0,0,.15) 100%),linear-gradient(0deg,rgba(0,0,0,.45),transparent 45%)}
+    .hero .wrap{position:relative;z-index:2}
+    .hero .label{color:#e6e6e6}
+    .hero h1 span{color:#4d8dff}
+    .hero .lead{color:#e6e6e6}
+    .hero .btn{background:#fff;color:var(--ink);border-color:#fff}.hero .btn:hover{background:#ebe9e4}
+    .hero .btn.ghost{background:transparent;color:#fff;border-color:#fff}.hero .btn.ghost:hover{background:#ffffff22}
     .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
     h1{margin:26px 0 24px;font:800 clamp(4.6rem,13vw,10.5rem)/.84 var(--head);letter-spacing:-.01em;text-transform:uppercase}
     h1 span{display:block;color:var(--blue)}
@@ -75,7 +83,19 @@
     .watch{padding:88px 0 8px}
     .watch .wrap{display:grid;grid-template-columns:1fr minmax(240px,360px);gap:64px;align-items:center}
     .watch p{color:var(--muted);font-size:1.08rem;max-width:46ch;margin:0 0 28px}
-    .video{width:100%;aspect-ratio:472/850;display:block;background:#111;border:1px solid var(--line);box-shadow:12px 12px 0 var(--blue)}
+    .video-open{position:relative;display:block;width:100%;aspect-ratio:478/850;padding:0;cursor:pointer;background:#111 url(derun-recap-poster.jpg) center/cover;border:1px solid var(--line);box-shadow:12px 12px 0 var(--blue)}
+    .video-open .play{position:absolute;inset:0;margin:auto;width:84px;height:84px;border-radius:50%;background:var(--pink);display:grid;place-items:center;transition:transform .15s}
+    .video-open .play:after{content:"";margin-left:6px;border-style:solid;border-width:14px 0 14px 24px;border-color:transparent transparent transparent #fff}
+    .video-open:hover .play{transform:scale(1.08)}
+    .vo{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:60px 20px 20px;background:rgba(10,10,10,.88);backdrop-filter:blur(6px)}
+    .vo.open{display:flex}
+    .vo-box{position:relative;display:flex;flex-direction:column;gap:12px;align-items:stretch;height:100%;max-height:900px;aspect-ratio:478/850;max-width:100%;margin:auto}
+    .vo video{flex:1;min-height:0;width:100%;object-fit:contain;background:#000;border-top:5px solid var(--pink)}
+    .vo-close{position:absolute;top:-8px;right:0;transform:translate(0,-100%);z-index:2;width:44px;height:44px;border:0;background:#fff;color:#111;font:700 1.6rem/1 var(--body);cursor:pointer}
+    .vo-close:hover{background:var(--pink);color:#fff}
+    .vo-cta{display:flex;gap:10px}.vo-cta .btn{flex:1;padding:14px 16px;margin:0;background:#fff;color:var(--ink);border-color:#fff}
+    .vo-cta .btn.ghost{background:transparent;color:#fff}
+    @media(max-width:860px){.vo{padding:56px 12px 12px}.vo-close{top:-8px;right:0}}
     .qr{display:block;margin:18px 22px 0;width:160px;height:160px}
     .status{margin:16px 0 0;padding:12px 14px;font-size:.9rem;border:1px solid var(--line);border-left:5px solid var(--blue);background:var(--bg)}
     .status.err{border-left-color:var(--pink)}
@@ -93,13 +113,13 @@
 
     @media(max-width:860px){
       .wrap{padding:0 22px}.hero{padding:48px 0 56px}
-      .hero .wrap,.about .wrap{grid-template-columns:1fr;gap:44px}
+      .hero .wrap,.about .wrap{grid-template-columns:minmax(0,1fr);gap:44px}h1{font-size:clamp(3.4rem,17vw,6rem)}
       .poster{box-shadow:8px 8px 0 var(--pink)}
       .facts .wrap{grid-template-columns:1fr}.fact,.fact:first-child{border-left:0;padding:22px 0;border-top:1px solid var(--line)}.fact:first-child{border-top:0}
-      .watch .wrap{grid-template-columns:1fr;gap:40px}.watch{padding-top:64px}.video{max-width:360px;margin:auto;box-shadow:8px 8px 0 var(--blue)}
+      .watch .wrap{grid-template-columns:1fr;gap:40px}.watch{padding-top:64px}.video-open{max-width:360px;margin:auto;box-shadow:8px 8px 0 var(--blue)}
       .actions .btn{width:100%}.grid{grid-template-columns:1fr}.about{padding-top:64px}
     }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+    @media(prefers-reduced-motion:reduce){.hero-video{display:none}html{scroll-behavior:auto}.btn,.video-open .play{transition:none}}
     @media print{body *{visibility:hidden}.ticket,.ticket *{visibility:visible}.ticket{display:block!important;position:absolute;left:0;top:0;width:100%}.t-actions{display:none}}
   </style>
 </head>
@@ -113,6 +133,10 @@
   </header>
 
   <section class="hero" id="top">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="derun-recap-poster.jpg" aria-hidden="true" tabindex="-1">
+      <source src="derun-recap.mp4" type="video/mp4">
+    </video>
+    <div class="hero-shade"></div>
     <div class="wrap">
       <div>
         <div class="label">Community / Sport / Culture / Lifestyle</div>
@@ -143,10 +167,7 @@
         <p>This is what a De Run Saturday looks like: friends, fresh air and a community moving together. Watch, then register your place.</p>
         <a class="btn" href="#register">Register your place <span class="arrow">↓</span></a>
       </div>
-      <video class="video" controls playsinline preload="metadata" poster="launch-video-poster.jpg" aria-label="Video of a De Run community run">
-        <source src="launch-video.mp4" type="video/mp4">
-        Your browser can't play this video.
-      </video>
+      <button class="video-open" type="button" id="openVideo" aria-label="Play the De Run recap video"><span class="play"></span></button>
     </div>
   </section>
 
@@ -227,6 +248,44 @@
     </div>
   </footer>
 
+  <div class="vo" id="videoOverlay" role="dialog" aria-modal="true" aria-label="De Run recap video" hidden>
+    <div class="vo-box">
+      <button class="vo-close" type="button" id="closeVideo" aria-label="Close video">×</button>
+      <video id="recapVideo" playsinline muted loop preload="none" poster="derun-recap-poster.jpg" aria-label="De Run recap: moments from a De Run community run">
+        <source src="derun-recap.mp4" type="video/mp4">
+      </video>
+      <div class="vo-cta">
+        <button class="btn" type="button" id="soundBtn">Sound on</button>
+        <a class="btn ghost" href="#register" id="voRegister">Register</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Video overlay
+    (function () {
+      const ov = document.getElementById('videoOverlay'), v = document.getElementById('recapVideo'), snd = document.getElementById('soundBtn');
+      let lastFocus = null;
+      const open = function (auto) {
+        lastFocus = document.activeElement;
+        ov.hidden = false; ov.classList.add('open'); document.body.style.overflow = 'hidden';
+        v.muted = true; v.currentTime = 0; snd.textContent = 'Sound on';
+        const p = v.play(); if (p && p.catch) p.catch(function () {});
+        document.getElementById('closeVideo').focus();
+        if (auto) { try { sessionStorage.setItem('derunVideoSeen', '1'); } catch (e) {} }
+      };
+      const close = function () {
+        v.pause(); ov.classList.remove('open'); ov.hidden = true; document.body.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      };
+      document.getElementById('openVideo').addEventListener('click', function () { open(false); });
+      document.getElementById('closeVideo').addEventListener('click', close);
+      document.getElementById('voRegister').addEventListener('click', close);
+      ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && ov.classList.contains('open')) close(); });
+      snd.addEventListener('click', function () { v.muted = !v.muted; snd.textContent = v.muted ? 'Sound on' : 'Sound off'; if (v.paused) v.play(); });
+    })();
+  </script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js"></script>
